@@ -1,0 +1,43 @@
+{% extends "global/Page.html" %}
+{% load otree static %}
+
+{% block title %}
+    Disposition Instructions
+{% endblock %}
+
+{% block content %}
+
+	<h2>
+	Disposition Game
+	</h2>
+	
+	<p>
+	In the Disposition game, you will attempt to maximize profits 
+	while buying and selling a series of stocks and avoiding the Disposition Effect.
+	</p>
+	
+	<h4>
+	Gameplay
+	</h4>
+	
+	<p>
+	Each round consists of the time it takes for the bar at the top of the game to run out. 
+	At the end of that timer, a new round is started.
+	During a round, a player can buy or sell exactly 1 stock. 
+	Your decision is not submitted until the end of the round. 
+	You may undo and decision to buy or sell until the end of the round.
+	</p>
+	
+	<p>
+		Next to each stock you will see a series of values:
+		<ul>
+			<li>Market Fluctuation is how much the market price has changed since the last round. </li>
+			<li>Market Price is the current value of the stock if it were bought or sold. </li>
+			<li>Acquisition Price is the price you purchased or short-sold the stock at last. </li>
+			<li>Owned is the current amount of units the player owns of the stock. </li>
+		</ul>
+	</p>
+
+    {% next_button %}
+
+{% endblock %}

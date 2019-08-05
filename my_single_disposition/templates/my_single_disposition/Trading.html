@@ -1,0 +1,121 @@
+{% extends "global/Page.html" %}
+{% load otree %}
+
+{% block title %}
+    Round {{ subsession.round_number }} of {{ Constants.num_rounds }}
+{% endblock %}
+
+{% block content %}
+
+
+<h4>Instructions</h4>
+
+<p>
+	This is a disposition game.
+    Your goal is to buy and sell products to try to maximize your poayoff.
+	Pressing a corresponding "Buy" button increases the number of units of a product you own. 
+	Pressing a "Sell" button decreases it.
+    You can only hold -1, 0, +1 of each product. 
+</p>
+
+<p>
+	At the end, a random round will be chosen for payment.
+</p>
+
+<h4>Trading Interface</h4>
+
+<table class="table table-bordered text-center" style="width: auto; margin: auto"> 
+	<tr>
+		<th>Round {{ subsession.round_number }} / {{ Constants.num_rounds }}</th>
+		<th>Market fluctuation</th>
+		<th>Market Price</th>
+		<th>Acquisition Price</th>
+		<th>Owned</th>
+		<th>Cash: {{player.cash}}</th>
+	</tr>
+	<tr>
+		<td> A </td>
+		<td>{{ group.product_A_market_fluctuation }}</td>
+		<td>{{ group.product_A_market_price }}</td>
+		<td>{{ player.product_A_acquisition_price }}</td>
+		<td>{{ player.product_A_owned }}</td>
+		<td>
+			<div>
+				{% if player.product_A_owned is 0 %}
+					<p><button name="product_A_owned" value=1 class="btn btn-primary btn-large">Yes, buy</button></p>
+					<p><button name="product_A_owned" value=-1 class="btn btn-primary btn-large">No, sell</button></p>
+				{% endif %}
+				{% if player.product_A_owned < 1 %}
+					<button type="button" onclick={{ player.on_click_buy_a }} class="btn btn-primary btn-large">Buy</button>
+				{% endif %}
+				{% if player.product_A_owned > -1 %}
+					<button type="button"  onclick="console.log(123)" class="btn btn-primary btn-large">Sell</button>
+				{% elif player.product_A_owned is -1 %}
+					<button type="button" class="btn btn-primary btn-large">Cannot Sell</button>
+				{% elif player.product_A_owned is 1 %}
+					<button type="button" class="btn btn-primary btn-large">Cannot Buy</button>
+				{% endif %}
+			</div>
+		</td>
+	</tr>
+	{% for prod_nm in Constants.product_names %}
+		{% if prod_nm == 'B' %}
+			<tr>
+				<td>{{ prod_nm }}</td>
+				<td>{{ group.product_B_market_fluctuation }}</td>
+				<td>{{ group.product_B_market_price }}</td>
+				<td>{{ player.product_B_acquisition_price }}</td>
+				<td>{{ player.product_B_owned }}</td>
+				<td>
+					<div>
+						{% if player.product_B_owned < 1 %}
+							<button type="button" onclick="player.on_click_buy_a" class="btn btn-primary btn-large">Buy</button>
+						{% endif %}
+						{% if player.product_B_owned > -1 %}
+							<button type="button" onclick="player.on_click_sell_a" class="btn btn-primary btn-large">Sell</button>
+						{% endif %}
+					</div>
+				</td>
+			</tr>
+		{% elif prod_nm == 'C' %}
+			<tr>
+				<td>{{ prod_nm }}</td>
+				<td>{{ group.product_C_market_fluctuation }}</td>
+				<td>{{ group.product_C_market_price }}</td>
+				<td>{{ player.product_C_acquisition_price }}</td>
+				<td>{{ player.product_C_owned }}</td>
+				<td>
+					<div>
+						{% if player.product_C_owned < 1 %}
+							<button type="button" onclick="player.on_click_buy_a" class="btn btn-primary btn-large">Buy</button>
+						{% endif %}
+						{% if player.product_C_owned > -1 %}
+							<button type="button" onclick="player.on_click_sell_a" class="btn btn-primary btn-large">Sell</button>
+						{% endif %}
+					</div>
+				</td>
+			</tr>
+		{% endif %}
+	{% endfor %}
+</table>
+
+	<form action="" method="post">
+		<input type="hidden" name="cash" id="id_cash" value={{ player.cash }}/>
+		<input type="hidden" name="product_A_owned" id="id_product_A_owned" value={{ player.product_A_owned }}/>
+		<input type="hidden" name="product_A_acquisition_price" id="id_product_A_acquisition_price" value={{ player.product_A_acquisition_price }}/>
+		{% for prod_nm in Constants.product_names %}
+			{% if prod_nm == 'B' %}
+				<input type="hidden" name="product_B_owned" id="id_product_B_owned" value="player.product_B_owned"/>
+				<input type="hidden" name="product_B_acquisition_price" id="id_product_B_acquisition_price" value="player.product_B_acquisition_price"/>
+			{% elif prod_nm == 'C' %}
+				<input type="hidden" name="product_C_owned" id="id_product_C_owned" value="player.product_C_owned"/>
+				<input type="hidden" name="product_C_acquisition_price" id="id_product_C_acquisition_price" value="player.product_C_acquisition_price"/>
+			{% endif %}
+		{% endfor %}
+	</form>
+	
+	<p>The form errors are: {{ form.errors }}</p>
+
+    {% next_button %}
+
+{% endblock %}

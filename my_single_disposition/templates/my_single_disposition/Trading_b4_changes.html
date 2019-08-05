@@ -1,0 +1,86 @@
+{% extends "global/Page.html" %}
+{% load otree %}
+
+{% block title %}
+    Round {{ subsession.round_number }} of {{ Constants.num_rounds }}
+{% endblock %}
+
+{% block content %}
+
+
+<h4>Instructions</h4>
+
+<p>
+	This is a disposition game.
+    Your goal is to buy and sell products to try to maximize your poayoff.
+	Pressing a corresponding "Buy" button increases the number of units of a product you own. 
+	Pressing a "Sell" button decreases it.
+    You can only hold -1, 0, +1 of each product. 
+</p>
+
+<p>
+	At the end, a random round will be chosen for payment.
+</p>
+
+<h4>Trading Interface</h4>
+
+<table> 
+	<tr>
+		<th>Round {{ subsession.round_number }} / {{ Constants.num_rounds }}</th>
+		<th>Market fluctuation</th>
+		<th>Market Price</th>
+		<th>Acquisition Price</th>
+		<th>Owned</th>
+		<th>Cash: {{player.cash}}</th>
+	</tr>
+	<tr>
+		<td> A </td>
+		<td>{{ group.product_A_market_fluctuation }}</td>
+		<td>{{ group.product_A_market_price }}</td>
+		<td>{{ player.product_A_acquisition_price }}</td>
+		<td>{{ player.product_A_owned }}</td>
+		<td>
+			<div>
+				<button type="button" onclick="on_click_set_owned(prod_nm,'Buy')" class="btn btn-primary btn-large">Buy</button>
+				<button type="button" onclick="on_click_set_owned(prod_nm, 'Sell')" class="btn btn-primary btn-large">Sell</button>
+			</div>
+		</td>
+	</tr>
+	{% for prod_nm in Constants.product_names %}
+		{% if prod_nm == 'B' %}
+			<tr>
+				<td>{{ prod_nm }}</td>
+				<td>{{ group.product_B_market_fluctuation }}</td>
+				<td>{{ group.product_B_market_price }}</td>
+				<td>{{ player.product_B_acquisition_price }}</td>
+				<td>{{ player.product_B_owned }}</td>
+				<td>
+					<div>
+						<button type="button" onclick="on_click_set_owned(prod_nm,'Buy')" class="btn btn-primary btn-large">Buy</button>
+						<button type="button" onclick="on_click_set_owned(prod_nm, 'Sell')" class="btn btn-primary btn-large">Sell</button>
+					</div>
+				</td>
+			</tr>
+		{% elif prod_nm == 'C' %}
+			<tr>
+				<td>{{ prod_nm }}</td>
+				<td>{{ group.product_C_market_fluctuation }}</td>
+				<td>{{ group.product_C_market_price }}</td>
+				<td>{{ player.product_C_acquisition_price }}</td>
+				<td>{{ player.product_C_owned }}</td>
+				<td>
+					<div>
+						<button type="button" onclick="on_click_set_owned(prod_nm,'Buy')" class="btn btn-primary btn-large">Buy</button>
+						<button type="button" onclick="on_click_set_owned(prod_nm, 'Sell')" class="btn btn-primary btn-large">Sell</button>
+					</div>
+				</td>
+			</tr>
+		{% endif %}
+	{% endfor %}
+</table>
+
+	
+
+    {% next_button %}
+
+{% endblock %}
